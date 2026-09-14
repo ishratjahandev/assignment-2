@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DIGITAL COUNTER</title>
+  <title>Digital Tasbeeh Counter</title>
   <style>
     * {
       margin: 0;
@@ -111,7 +111,7 @@
     }
 
     .history-list {
-      max-height: 200px;
+      max-height: 250px;
       overflow-y: auto;
       text-align: left;
     }
@@ -121,23 +121,30 @@
       padding: 6px 10px;
       font-weight: bold;
       border-radius: 6px;
-      margin-top: 8px;
+      margin-top: 10px;
       font-size: 14px;
     }
 
     .dua-item {
-      padding: 6px 15px;
+      padding: 8px 12px;
       display: flex;
       justify-content: space-between;
       font-size: 14px;
       border-bottom: 1px dashed #e2e8f0;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background-color 0.2s;
+    }
+
+    .dua-item:hover {
+      background-color: #e0f2fe;
     }
   </style>
 </head>
 <body>
 
   <div class="card-container" id="card-container">
-    <h1>DIGITAL COUNTER</h1>
+    <h1>Digital Tasbeeh Counter</h1>
 
     <select id="dua-select" class="dua-select">
       <option value="Subhanallah">Subhanallah</option>
@@ -150,20 +157,19 @@
     <div class="count-display" id="count-display">0</div>
 
     <div class="btn-group">
-      <button class="btn-count" id="count-btn">Count</button>
+      <button class="btn-count" id="count-btn">Count (+1)</button>
       <button class="btn-reset" id="reset-btn">Reset</button>
       <button class="btn-history" id="history-btn">📊 History</button>
     </div>
   </div>
 
   <div class="history-card" id="history-card">
-    <h3>History</h3>
+    <h3>History (Click to view)</h3>
     <div class="history-list" id="history-list"></div>
   </div>
 
   <script>
     let count = 0;
-    let db;
 
     const countDisplay = document.getElementById("count-display");
     const countBtn = document.getElementById("count-btn");
@@ -181,87 +187,60 @@
       return today.toLocaleDateString('en-GB');
     }
 
-    // 🗄️ IndexedDB ডাটাবেজ ওপেন করা
-    const dbRequest = indexedDB.open("TasbeehDatabase", 1);
-
-    dbRequest.onupgradeneeded = function(event) {
-      db = event.target.result;
-      if (!db.objectStoreNames.contains("history")) {
-        db.createObjectStore("history", { keyPath: "id" });
+    function getStoredHistory() {
+      try {
+        const data = localStorage.getItem("tasbeehDuaHistory");
+        return data ? JSON.parse(data) : {};
+      } catch (e) {
+        return {};
       }
-    };
-
-    dbRequest.onsuccess = function(event) {
-      db = event.target.result;
-    };
-
-    dbRequest.onerror = function(event) {
-      console.error("Database error:", event.target.errorCode);
-    };
-
-    // 💾 IndexedDB তে সেভ করা
-    function saveToIndexedDB(date, dua) {
-      if (!db) return;
-      const transaction = db.transaction(["history"], "readwrite");
-      const store = transaction.objectStore("history");
-      const id = `${date}_${dua}`;
-
-      const request = store.get(id);
-
-      request.onsuccess = function() {
-        let currentCount = request.result ? request.result.count : 0;
-        store.put({ id: id, date: date, dua: dua, count: currentCount + 1 });
-      };
     }
 
-    // 📊 IndexedDB থেকে হিস্ট্রি লোড করা
-    function renderHistoryFromDB() {
-      if (!db) return;
-      historyList.innerHTML = "";
-
-      const transaction = db.transaction(["history"], "readonly");
-      const store = transaction.objectStore("history");
-      const getAllRequest = store.getAll();
-
-      getAllRequest.onsuccess = function() {
-        const records = getAllRequest.result;
-
-        if (records.length === 0) {
-          historyList.innerHTML = "<p style='text-align:center; padding:10px;'>No history found</p>";
-          return;
-        }
-
-        // তারিখ অনুযায়ী ডাটা গ্রুপ করা
-        let grouped = {};
-        records.forEach(item => {
-          if (!grouped[item.date]) grouped[item.date] = [];
-          grouped[item.date].push(item);
-        });
-
-        for (let date in grouped) {
-          let dateHeader = document.createElement("div");
-          dateHeader.className = "date-header";
-          dateHeader.innerText = `📅 ${date}`;
-          historyList.appendChild(dateHeader);
-
-          grouped[date].forEach(item => {
-            let duaItem = document.createElement("div");
-            duaItem.className = "dua-item";
-            duaItem.innerHTML = `<span>✨ ${item.dua}</span> <strong>${item.count} বার</strong>`;
-            historyList.appendChild(duaItem);
-          });
-        }
-      };
+    function saveHistory(historyData) {
+      try {
+        localStorage.setItem("tasbeehDuaHistory", JSON.stringify(historyData));
+      } catch (e) {
+        console.error("Save error", e);
+      }
     }
 
+    // 🔄 সিলেক্ট করা দোয়ার আগের সেভড কাউন্ট লোড করা
+    function loadCurrentDuaCount() {
+      let todayDate = getTodayDate();
+      let selectedDua = duaSelect.value;
+      let savedHistory = getStoredHistory();
+
+      if (savedHistory[todayDate] && savedHistory[todayDate][selectedDua]) {
+        count = savedHistory[todayDate][selectedDua];
+      } else {
+        count = 0;
+      }
+      countDisplay.innerText = count;
+      resetCardStyle();
+    }
+
+    function resetCardStyle() {
+      cardContainer.style.backgroundColor = "#ffffff";
+      cardContainer.style.color = "#000000";
+    }
+
+    loadCurrentDuaCount();
+
+    // ➕ Count বাটন
     countBtn.addEventListener("click", function() {
       count = count + 1;
       countDisplay.innerText = count;
 
       let todayDate = getTodayDate();
       let selectedDua = duaSelect.value;
+      let savedHistory = getStoredHistory();
 
-      saveToIndexedDB(todayDate, selectedDua);
+      if (!savedHistory[todayDate]) {
+        savedHistory[todayDate] = {};
+      }
+
+      savedHistory[todayDate][selectedDua] = count;
+      saveHistory(savedHistory);
 
       let lastTwoDigits = count % 100;
       if (lastTwoDigits === 33 || lastTwoDigits === 66 || lastTwoDigits === 99) {
@@ -269,31 +248,63 @@
         cardContainer.style.backgroundColor = "#22c55e";
         cardContainer.style.color = "#ffffff";
       } else {
-        cardContainer.style.backgroundColor = "#ffffff";
-        cardContainer.style.color = "#000000";
+        resetCardStyle();
       }
     });
 
+    duaSelect.addEventListener("change", function() {
+      loadCurrentDuaCount();
+    });
+
+    // 🔄 Reset বাটন
     resetBtn.addEventListener("click", function() {
       count = 0;
       countDisplay.innerText = count;
-      cardContainer.style.backgroundColor = "#ffffff";
-      cardContainer.style.color = "#000000";
+      resetCardStyle();
     });
 
-    duaSelect.addEventListener("change", function() {
-      count = 0;
-      countDisplay.innerText = count;
-      cardContainer.style.backgroundColor = "#ffffff";
-      cardContainer.style.color = "#000000";
-    });
+    // 📊 হিস্ট্রি দেখান (আলাদা আলাদা জিকির সহ)
+    function renderHistory() {
+      historyList.innerHTML = "";
+      let savedHistory = getStoredHistory();
+
+      if (Object.keys(savedHistory).length === 0) {
+        historyList.innerHTML = "<p style='text-align:center; padding:10px;'>No history found</p>";
+        return;
+      }
+
+      for (let date in savedHistory) {
+        let dateHeader = document.createElement("div");
+        dateHeader.className = "date-header";
+        dateHeader.innerText = `📅 ${date}`;
+        historyList.appendChild(dateHeader);
+
+        let duasObj = savedHistory[date];
+
+        for (let duaName in duasObj) {
+          let duaCount = duasObj[duaName];
+
+          let duaItem = document.createElement("div");
+          duaItem.className = "dua-item";
+          duaItem.innerHTML = `<span>✨ ${duaName}</span> <strong>${duaCount} বার</strong>`;
+          
+          duaItem.addEventListener("click", function() {
+            duaSelect.value = duaName;
+            loadCurrentDuaCount();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+
+          historyList.appendChild(duaItem);
+        }
+      }
+    }
 
     historyBtn.addEventListener("click", function() {
       if (historyCard.style.display === "block") {
         historyCard.style.display = "none";
       } else {
         historyCard.style.display = "block";
-        renderHistoryFromDB();
+        renderHistory();
       }
     });
   </script>
