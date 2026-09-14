@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ডিজিটাল তসবি কাউন্টার (IndexedDB সহ)</title>
+  <title>DIGITAL COUNTER</title>
   <style>
     * {
       margin: 0;
@@ -137,27 +137,27 @@
 <body>
 
   <div class="card-container" id="card-container">
-    <h1>ডিজিটাল তসবি</h1>
+    <h1>DIGITAL COUNTER</h1>
 
     <select id="dua-select" class="dua-select">
-      <option value="সুবহানআল্লাহ">সুবহানআল্লাহ (Subhanallah)</option>
-      <option value="আলহামদুলিল্লাহ">আলহামদুলিল্লাহ (Alhamdulillah)</option>
-      <option value="আল্লাহু আকবার">আল্লাহু আকবার (Allahu Akbar)</option>
-      <option value="আস্তাগফিরুল্লাহ">আস্তাগফিরুল্লাহ (Astaghfirullah)</option>
-      <option value="দরূদ শরীফ">দরূদ শরীফ (Durood)</option>
+      <option value="Subhanallah">Subhanallah</option>
+      <option value="Alhamdulillah">Alhamdulillah</option>
+      <option value="Allahu Akbar">Allahu Akbar</option>
+      <option value="Astaghfirullah">Astaghfirullah</option>
+      <option value="Durood">Durood</option>
     </select>
 
     <div class="count-display" id="count-display">0</div>
 
     <div class="btn-group">
-      <button class="btn-count" id="count-btn">Count (+1)</button>
-      <button class="btn-reset" id="reset-btn">Reset (নতুন জিকির)</button>
-      <button class="btn-history" id="history-btn">📊 হিস্ট্রি দেখুন</button>
+      <button class="btn-count" id="count-btn">Count</button>
+      <button class="btn-reset" id="reset-btn">Reset</button>
+      <button class="btn-history" id="history-btn">📊 History</button>
     </div>
   </div>
 
   <div class="history-card" id="history-card">
-    <h3>পড়ার হিস্ট্রি (ডাটাবেজে সেভড)</h3>
+    <h3>History</h3>
     <div class="history-list" id="history-list"></div>
   </div>
 
@@ -227,7 +227,7 @@
         const records = getAllRequest.result;
 
         if (records.length === 0) {
-          historyList.innerHTML = "<p style='text-align:center; padding:10px;'>কোনো হিস্ট্রি পাওয়া যায়নি</p>";
+          historyList.innerHTML = "<p style='text-align:center; padding:10px;'>No history found</p>";
           return;
         }
 
