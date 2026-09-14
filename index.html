@@ -31,12 +31,11 @@
       background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      /* Real Finger Tasbeeh Curved Oval Shape */
       border-radius: 140px 140px 100px 100px;
       padding: 35px 24px 30px;
       width: 100%;
       max-width: 290px;
-      height: 440px;
+      height: 460px;
       text-align: center;
       border: 3px solid #fbcfe8;
       box-shadow: 
@@ -72,7 +71,7 @@
       height: 22px;
       background: #fbcfe8;
       border-radius: 0 0 12px 12px;
-      border: 2px solid #f472b6;
+      border: 2px solid #dc4794;
       border-top: none;
     }
 
@@ -135,7 +134,7 @@
       font-family: 'Fredoka', cursive;
       font-size: 58px;
       font-weight: 700;
-      color: #ec4899;
+      color: #e72a88;
       text-shadow: 0 4px 12px rgba(236, 72, 153, 0.25);
       line-height: 1;
       user-select: none;
@@ -146,61 +145,59 @@
       transform: scale(1.15);
     }
 
-    /* 🌸 Adorable Heart-like Main Button Layout */
+    /* 🌸 Main Action Area */
     .btn-group {
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 16px;
       align-items: center;
       width: 100%;
-      position: relative;
     }
 
+    /* ❤️ Red Colored Main Counter Button */
     .btn-count {
-      width: 105px;
-      height: 105px;
+      width: 110px;
+      height: 110px;
       border-radius: 50%;
       border: 4px solid #ffffff;
-      background: linear-gradient(135deg, #f472b6, #db2777);
+      background: linear-gradient(135deg, #d663d6, #be4f8a);
       color: #ffffff;
       font-family: 'Fredoka', cursive;
       font-size: 19px;
       font-weight: 600;
       cursor: pointer;
       box-shadow: 
-        0 10px 25px rgba(219, 39, 119, 0.35),
+        0 10px 25px rgba(225, 29, 72, 0.4),
         inset 0 4px 6px rgba(255, 255, 255, 0.4);
       transition: all 0.15s ease;
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-top: 5px;
     }
 
     .btn-count:active {
       transform: scale(0.90);
-      box-shadow: 0 4px 12px rgba(219, 39, 119, 0.3);
+      box-shadow: 0 4px 12px rgba(225, 29, 72, 0.35);
     }
 
-    /* ⚙️ Cute Pill Sub-Buttons Positioned Like Real Device */
+    /* ⚙️ Sub-Buttons Placed BELOW the Count Button */
     .sub-btn-group {
       display: flex;
-      width: 100%;
+      width: 90%;
       justify-content: space-between;
-      position: absolute;
-      top: 5px;
-      padding: 0 4px;
+      gap: 12px;
     }
 
     button.sub-btn {
+      flex: 1;
       border: none;
-      padding: 6px 10px;
-      font-size: 11px;
+      padding: 8px 12px;
+      font-size: 12px;
       font-weight: 700;
-      border-radius: 12px;
+      border-radius: 14px;
       cursor: pointer;
       transition: all 0.2s ease;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.06);
     }
 
     button.sub-btn:active {
@@ -289,6 +286,101 @@
       background: #fce7f3;
       color: #db2777;
     }
+
+    /* 🎀 Cute Custom Modal Popup UI */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(71, 85, 105, 0.4);
+      backdrop-filter: blur(6px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      z-index: 999;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-box {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 24px 20px 20px;
+      width: 85%;
+      max-width: 270px;
+      text-align: center;
+      border: 3px solid #fbcfe8;
+      box-shadow: 0 15px 35px rgba(244, 114, 182, 0.25);
+      transform: scale(0.8);
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .modal-overlay.active .modal-box {
+      transform: scale(1);
+    }
+
+    .modal-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .modal-box h4 {
+      font-family: 'Fredoka', cursive;
+      font-size: 17px;
+      color: #db2777;
+      margin-bottom: 6px;
+    }
+
+    .modal-box p {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 18px;
+      font-weight: 500;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .modal-btn {
+      flex: 1;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .modal-btn:active {
+      transform: scale(0.95);
+    }
+
+    .modal-btn-yes {
+      background: linear-gradient(135deg, #f43f5e, #be123c);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3);
+    }
+
+    .modal-btn-no {
+      background: #f1f5f9;
+      color: #64748b;
+    }
+
+    .modal-btn-no:hover {
+      background: #e2e8f0;
+    }
   </style>
 </head>
 <body>
@@ -309,18 +401,33 @@
     </div>
 
     <div class="btn-group">
+      <!-- Main Heart/Tap Button -->
+      <button class="btn-count" id="count-btn">TAP 💕</button>
+
+      <!-- Sub-Buttons (Placed Below) -->
       <div class="sub-btn-group">
         <button class="sub-btn btn-reset" id="reset-btn">↺ Reset</button>
         <button class="sub-btn btn-history" id="history-btn">📊 History</button>
       </div>
-
-      <button class="btn-count" id="count-btn">TAP 💕</button>
     </div>
   </div>
 
   <div class="history-card" id="history-card">
     <h3>History Logs 🌸</h3>
     <div class="history-list" id="history-list"></div>
+  </div>
+
+  <!-- 🌸 Cute Modal Popup Overlay -->
+  <div class="modal-overlay" id="custom-modal">
+    <div class="modal-box">
+      <div class="modal-icon">🌸</div>
+      <h4>Reset Counter?</h4>
+      <p>Are you sure you want to reset the current screen count to 0?</p>
+      <div class="modal-actions">
+        <button class="modal-btn modal-btn-no" id="modal-cancel">No</button>
+        <button class="modal-btn modal-btn-yes" id="modal-confirm">Yes</button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -334,6 +441,11 @@
     const historyCard = document.getElementById("history-card");
     const historyList = document.getElementById("history-list");
     const duaSelect = document.getElementById("dua-select");
+
+    // Custom Modal Elements
+    const customModal = document.getElementById("custom-modal");
+    const modalConfirm = document.getElementById("modal-confirm");
+    const modalCancel = document.getElementById("modal-cancel");
 
     const clickSound = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
 
@@ -395,6 +507,7 @@
         savedHistory[todayDate] = {};
       }
 
+      // হিস্ট্রিতে ডাটা সবসময় জমা হতে থাকবে
       savedHistory[todayDate][selectedDua] = count;
       saveHistory(savedHistory);
 
@@ -415,10 +528,22 @@
       loadCurrentDuaCount();
     });
 
+    // 🌸 Open Cute Modal Popup on Reset Click
     resetBtn.addEventListener("click", function() {
+      customModal.classList.add("active");
+    });
+
+    // Handle "Yes" Button Click - স্ক্রিনের কাউন্ট ০ হবে, কিন্তু হিস্ট্রিতে ডাটা সেভ থাকবে
+    modalConfirm.addEventListener("click", function() {
       count = 0;
       countDisplay.innerText = count;
       resetCardStyle();
+      customModal.classList.remove("active");
+    });
+
+    // Handle "No" Button Click
+    modalCancel.addEventListener("click", function() {
+      customModal.classList.remove("active");
     });
 
     function renderHistory() {
