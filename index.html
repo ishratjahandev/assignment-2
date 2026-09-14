@@ -157,7 +157,7 @@
     <div class="count-display" id="count-display">0</div>
 
     <div class="btn-group">
-      <button class="btn-count" id="count-btn">Count (+1)</button>
+      <button class="btn-count" id="count-btn">Count</button>
       <button class="btn-reset" id="reset-btn">Reset</button>
       <button class="btn-history" id="history-btn">📊 History</button>
     </div>
@@ -204,7 +204,7 @@
       }
     }
 
-    // 🔄 সিলেক্ট করা দোয়ার আগের সেভড কাউন্ট লোড করা
+    
     function loadCurrentDuaCount() {
       let todayDate = getTodayDate();
       let selectedDua = duaSelect.value;
@@ -226,7 +226,7 @@
 
     loadCurrentDuaCount();
 
-    // ➕ Count বাটন
+    
     countBtn.addEventListener("click", function() {
       count = count + 1;
       countDisplay.innerText = count;
@@ -256,14 +256,14 @@
       loadCurrentDuaCount();
     });
 
-    // 🔄 Reset বাটন
+    
     resetBtn.addEventListener("click", function() {
       count = 0;
       countDisplay.innerText = count;
       resetCardStyle();
     });
 
-    // 📊 হিস্ট্রি দেখান (আলাদা আলাদা জিকির সহ)
+    
     function renderHistory() {
       historyList.innerHTML = "";
       let savedHistory = getStoredHistory();
@@ -286,7 +286,7 @@
 
           let duaItem = document.createElement("div");
           duaItem.className = "dua-item";
-          duaItem.innerHTML = `<span>✨ ${duaName}</span> <strong>${duaCount} বার</strong>`;
+          duaItem.innerHTML = `<span>✨ ${duaName}</span> <strong>${duaCount}</strong>`;
           
           duaItem.addEventListener("click", function() {
             duaSelect.value = duaName;
